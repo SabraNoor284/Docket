@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Docket · Task dashboard</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header class="top">
+    <div class="brand">
+      <h1>Docket</h1>
+      <p class="tagline">Everything you owe, in one place.</p>
+    </div>
+
+    <section class="progress" aria-label="Progress overview">
+      <div class="bar" id="bar" role="img" aria-label="No tasks yet">
+        <span class="seg seg-todo"></span>
+        <span class="seg seg-progress"></span>
+        <span class="seg seg-done"></span>
+      </div>
+      <dl class="numbers">
+        <div><dt>To do</dt><dd id="n-todo">0</dd></div>
+        <div><dt>In progress</dt><dd id="n-progress">0</dd></div>
+        <div><dt>Done</dt><dd id="n-done">0</dd></div>
+        <div class="late"><dt>Overdue</dt><dd id="n-overdue">0</dd></div>
+        <div><dt>Completed</dt><dd id="n-rate">0%</dd></div>
+      </dl>
+    </section>
+  </header>
+
+  <form class="toolbar" id="filters" role="search" autocomplete="off">
+    <label class="field grow">
+      <span>Search</span>
+      <input type="search" id="f-q" maxlength="100" placeholder="Search titles and notes">
+    </label>
+    <label class="field">
+      <span>Priority</span>
+      <select id="f-priority">
+        <option value="">All priorities</option>
+        <option value="high">High</option>
+        <option value="medium">Medium</option>
+        <option value="low">Low</option>
+      </select>
+    </label>
+    <label class="field">
+      <span>Sort by</span>
+      <select id="f-sort">
+        <option value="created">Newest first</option>
+        <option value="due">Due date</option>
+        <option value="priority">Priority</option>
+      </select>
+    </label>
+    <button type="button" class="btn primary" id="new-task">Add task</button>
+  </form>
+
+  <main class="board" id="board">
+    <section class="column" data-status="todo" aria-labelledby="h-todo">
+      <h2 id="h-todo">To do <span class="count" data-count="todo">0</span></h2>
+      <ul class="list" data-list="todo"></ul>
+    </section>
+    <section class="column" data-status="in_progress" aria-labelledby="h-progress">
+      <h2 id="h-progress">In progress <span class="count" data-count="in_progress">0</span></h2>
+      <ul class="list" data-list="in_progress"></ul>
+    </section>
+    <section class="column" data-status="done" aria-labelledby="h-done">
+      <h2 id="h-done">Done <span class="count" data-count="done">0</span></h2>
+      <ul class="list" data-list="done"></ul>
+    </section>
+  </main>
+
+  <dialog id="dialog" aria-labelledby="dialog-title">
+    <form id="task-form" method="dialog" novalidate>
+      <h2 id="dialog-title">Add task</h2>
+      <label class="field">
+        <span>Title</span>
+        <input id="t-title" name="title" required maxlength="120">
+      </label>
+      <label class="field">
+        <span>Notes</span>
+        <textarea id="t-description" name="description" rows="3" maxlength="1000"></textarea>
+      </label>
+      <div class="row">
+        <label class="field">
+          <span>Status</span>
+          <select id="t-status" name="status">
+            <option value="todo">To do</option>
+            <option value="in_progress">In progress</option>
+            <option value="done">Done</option>
+          </select>
+        </label>
+        <label class="field">
+          <span>Priority</span>
+          <select id="t-priority" name="priority">
+            <option value="low">Low</option>
+            <option value="medium" selected>Medium</option>
+            <option value="high">High</option>
+          </select>
+        </label>
+        <label class="field">
+          <span>Due date</span>
+          <input type="date" id="t-due" name="due_date">
+        </label>
+      </div>
+      <p class="form-error" id="form-error" role="alert" hidden></p>
+      <div class="actions">
+        <button type="button" class="btn" id="cancel">Cancel</button>
+        <button type="submit" class="btn primary" id="save">Save task</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
